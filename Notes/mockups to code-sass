@@ -1,0 +1,60 @@
+Main sections: Header, main content, footer
+
+Div: an 'invisible box', building blocks of HTML- generic containers that have no sematic meaning. 
+	Just the dimensions of its content. 
+
+	puts borders on divs (in css) to use as debugging tool 
+
+	Block: begin on a new line and occupy 100% of its available width (either the page or parent element). Will be as wide as its available space and as tall as the content inside it 
+
+	Inline: can only have the heght or width of what is inside it- caanot aply heigt or width to them in CDD. Displays "in the line" of text. Can use to wrap some text inside a paragraph, without disrupting the flow of that paragraph. 
+
+	Inline-block: hybrid- can have height and width but it doesn't start on a new line and doesn't break the flow. 
+
+	Box model: the spedcification that defines how a box and its attributes relate to each other. 
+		Border: surround the box
+		Margin: space outside the <div>'s border
+		padding: space inside the <div>'s border
+
+Collapsed margins: when boxes are next to each other, the larger margin is used. 
+
+box-sizing: border-box
+	padding is subracted from total width instead of adding to it. 
+
+// * {  
+	// -webkit-box-sizing
+	//get the rest from Elyse
+	
+
+Can make the box-sizing : border-box global- but don't make other things gloval
+
+For nav bars:
+Use html <nav> instead of <ul> for accesibility 
+	Can also use div class nav
+
+By default the brower applies margin:8px to body. 
+	So, set margin:0 right away. 
+
+B/c floated elements are take "out of the flow", non-floated elements after it will appear as if the floated element isn't there- they ignore floated element and appear as they normally would if float wasn't there. 
+
+Clear:
+to have the element resect that there are elements 'above' it, even though they are floated. 
+	Clear property will force a <div> to fall below the floated elements. 
+	Four values: both/left/right/none
+
+Floated elements do't count as content of their parent <div> so they don't count as sheight. 
+	the parent element will be the heigt of whatever content is inside it
+
+A floated parent expands to contain any floated elements within it. 
+
+Clear fix: shortcut that clears so it forces the parent to recognize the children elements
+relies on CSS 'after' property (psuedoselector)
+	.element:after {
+		content: ""
+		display:block
+		visibility:hidden
+		clear:both
+	}
+
+	visibility:hidden vs display:non
+		display removes from DOM; visibility- it's still there but invisible

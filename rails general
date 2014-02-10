@@ -1,0 +1,49 @@
+ 1. rails new APPNAME
+ 2. bundle?
+ 3.  rails generate scaffold ModelName attribute:type othermodel:references
+
+  1. Generate model: NAME is singular
+  rails generate model NAME [:field[:type][:index]]
+  2. Migrations - add columns(attributes)to database
+  rails generate migration NAME [:field[:type][:index]]
+4. Add relationships to models
+5. Run migration
+  bundle exec rake db:migrate
+
+
+form_for helper: used when you want to bind a form to a model object (when we want to use form_for to either create or update the attributes on a given model)
+
+params for associated model:
+def wardrobe_item_params
+    params.require(:wardrobe_item).permit(:garment, :label, :season, :color)
+  end
+
+
+To remove/overwrite migrations
+  add --force at end of rails g migrate....
+
+Where method: in console
+showtimes.where("location" = "Alamo Drafthouse")
+
+
+Testing:
+before testing run rake db:test:prepare
+
+AJAX:
+1. Form
+  form_for(@project, remote:true)
+  form_for [@subject, @question], remote: true
+2. Add to assets/javascripts/<modelnameplural>
+  $(document).on('ajax:success', function(e, data) {
+  console.log('Ajax Response data': data);
+  });
+3. In controller#create, add to respond_to block:
+  format.js {render layout:false}
+4. Create <controlleraction>.js.erb file to manipulate HTML for instant change:
+  (function(){
+    var projectHtml = "<%= j render('show', :project => @project) %>";
+    $('projects').prepend(projectHtml);
+  })();
+5. Add projects class to Html where want project rendered
+
+

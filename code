@@ -1,0 +1,110 @@
+class Array
+  def include?(n)   
+    self.each do |i|
+      if i == n
+        return true
+      else 
+        return false
+      end     
+    end
+  end
+end
+
+class Array
+  def each(&block)
+    i = 0 
+
+    while i < self.size
+      yield(self[i])
+
+      i += 1
+    end
+  end
+end
+
+# yield:
+      class Array
+      def collect!
+        self.each_with_index! do |value, index|
+        self[index] = yield(value)
+        # saying replace self index with value
+        end
+      end
+
+array = [1,2,3,4]
+array2 = array.collect! do |n|
+  n + 1
+end
+
+# FizzBuzz
+def fizzbuzz
+  (1..100).map do |i|
+    if (i % 3 ==0) && (i % 5 == 0)
+      print "FizzBuzz"
+    elsif i % 3 == 0
+      print "Fizz"
+    elsif  i % 5 == 0 
+      print "Buzz"
+    else
+      print i
+    end
+  end 
+end
+
+def fizzbuzz(n)
+  if (n % 3 ==0) && (n % 5 == 0)
+      print "FizzBuzz"
+  elsif n % 3 == 0
+      print "Fizz"
+  elsif n % 5 == 0 
+      print "Buzz"
+  else
+    print n
+  end 
+end
+def fizzbuzz
+  for n in 1..100
+    if (n % 3 == 0) && (n % 5 == 0)
+      print "FizzBuzz"
+    elsif n % 3 == 0
+      print "Fizz"
+    elsif n % 5 == 0 
+      print "Buzz"
+    else
+    print n
+    end 
+  end
+end
+
+# Closure- when called contains what ever value was in it when you created it
+# Example of Proc objects preserving local context
+
+def counter
+  n = 0
+  return Proc.new { n+= 1 }
+end
+
+a = counter
+a.call            # returns 1
+a.call            # returns 2
+
+b = counter
+b.call            # returns 1
+
+a.call            # returns 3
+
+# Recursive Fib- with memoization
+fibonacci = Hash.new{ |r,n| r[n] = n < 2 ? n : r[n-1] + r[n-2] }
+fibonacci[1] = 1
+fibonacci[5]= 13
+
+def fib(n)
+  fibn = Hash.new do |r,n|
+    if n < 2
+      r[n] = n
+    else
+      r[n] = r[n-1] + r[n-2]
+    end
+  end
+  return fibn[n]
+end

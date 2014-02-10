@@ -1,0 +1,3 @@
+model is always singular (showing how one instance works)
+
+controller and tables are always plural (controlling and storing all instances of that class)

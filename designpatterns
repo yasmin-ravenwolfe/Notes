@@ -1,0 +1,134 @@
+1. Template: Varying Algorithm through INHERITANCE
+  If you want to vary an algorithm, do so bycoding the invariant part in a base/parent class and *encapsulating the variable parts in methods that are defined by a number of subclasses
+    - PlainTextReport and HTMLReport inherit from Report
+  1. Build an abstract class with skeletal method- template method 
+  2. Template method drives the bit of processing that needs to vary by making calls to abstract methods- which are then supplied by the concrete subclasses. (Template methodcan leave methods blank so subclasses MUST supply methods or provide a default implementation that subclasses CAN ovveride if they want)
+  ** Hook methods:Non-abstract methods that can be overridedn in the concrete classes
+      - Make decision for which variation to use when pick concrete subclass
+
+
+2. Strategy: Pull Algorithm out into its own class- DELEGATE
+  Pull the algorithm out into a separate object. The motive behind the Strategy patten is to supply the context (user) with an object that knows how to perform some variation on an algorithm. The strategy objects the do the computing.
+    -Initialize a strategy object when creating context object, then all vary methods can *DELEGATED to the stratgy object.
+  1. Define a family of objects - the *strategies- which all do the same thing and support exactly the same interface
+  2. B/c all strategy objects look alike from outside, the *context class- or user of the strategy - can treat the strategies like interchangeable parts 
+    -- Make decision for which variation to use by selecting a strategy class at runtime
+
+3. Observer: Subject informs observers of state changes
+  Building a clean interface between the source of the news (the observable object) that some object has changed and the consumers of that news (the observers).
+    - Informing observers of salary changes for an Employee 
+  1. Subject class- the class with the news
+  2. Observers - the objects that are interested in getting the news.
+  3. Initialize an array of observers on subject and add methods to manage array (add, delete); notify_observers method will iterate over observers list, calling the calling (and delegating) the update function to each
+    4. Pull method- observers have to pull whatever details about the change that they need out of the subject (ie add observers as a code block- which makes the notify_observers actions a proc- and then have notify_observer just call .call on each observer, thus calling the proc associated with each - 105).
+    5. Push method - the subject sends the observers a lot of details about the change
+   -- can create own Subject class/module; Ruby comes with OBSERVABLE module (require 'Observer'; include Observable)
+
+4. Composite: the whole is more than the sum of its parts; the sum acts like one of the parts 
+  Build up bigger objects from smaller sub-objects. Use when you are trying to build a hierarchy or tree of objects, and you do not want the code that uses the tree to constantly worry about whether it is dealing with a single object or whole bushy branch of tree. 
+    - The tree of cake-making tasks (bigger tasks broken up into sub-task branches, which are themseves made of sub-tasks)
+  1. To build, you need three moving parts. First, the COMPONENT - the common interface/abstract base class for all your objects. What the basic and higher level tasks have IN COMMON (cake- takes a certain amount of time)
+  2. One or more LEAF classes (leaf nodes) - simple, indivisible building blocks of the process. 
+  3. At least one higher-level class, the COMPOSITE class (interior nodes)- a component, bit is also a higher-level object that is built from subcomponents. Tasks that are made up from subtasks- tree may be arbitrarily deep (any of the subtasks may itself be a compsite and have subtasks).
+
+5. Iterator: Provides world with a sort of movable pointer into the objects stored inside an otherwise opaque aggregate object.  Access elements of an aggreate object sequentially without exposing its underlying representation
+  Allows an aggregate object to provide the outside world with a way to access its collection of sub-objects- by being able to sequence through without needing to know any of the details of how the aggregate object is stroing them. 
+      - .each on array
+  1. External iterator: An object points down at a member of the collection. The iterator is a separate object from the aggregate (ie like iterating through list in Java; ArrayIterator class)- pulls the sub-objects out of aggreagte in order to introduce code to each sub-object 
+  2. Internal iterator: all iterating action occurs inside the aggregate object. Using a CODE BLOCK, you pass your logic down into the aggregate; the aggragate can then call your code block for each of its sub-objects. Instead of passing some sort of pointer up, we pass the code that needs to deal with sub-objects down. Relies on code blocks and PROCs. 
+
+6. Command: instruction to do something specific; factoring out action code into its own object 
+  Command that can be filled- or executed, right now, or later, or when something specific happens. Keeps a running list of things program needs to do, or remembering what it has already done.
+    - GUI button objects that do different things; creating, deleting, and copying file commands (and ability to undo); ActiveRecord (db creation: self.up = execute; db drop: self.down = unexecute)
+  1. Commands: little packages of action. An object that does nothing but wait to be executed and , when executed, goes out and performs an application-specific task.
+    Separates out something that changes (action code, what we want to happen when a button is pushed) from something that does not change (ie generic button class.) Connection b/t these is a RUNTIME thing- so can change behavior at runtime
+  2. Have command classes inherit from Command class (or create as proc); CompositeCommand can store all in array and then iterate to execute
+    When commands are stored in array, we can UNDO (unexecute last command in list; if execute if destructive must save perishable data in command object when execute, so can be put back on unexecute) and REDO (reexecute commands, starting with last one undone)
+
+7. Adapter: bridge gap b/t mismatching software interfaces 
+  An object that crosses the chasm b/t the interface you have and the interface you need. 
+  - Encrypter class that takes file- create a StringAdapter class so it can take a string; Object to render text objects on screen- some text in TextObject and some in BritishTextObject (inches vs cm, color vs colour)
+  1. An adpater supports the interface we need on the outside, but it implements that interface by making callings to an object hidden inside- an object that does evrything we need it to do, but does it via the wrong interface.
+      -- remember in Ruby, you can always reopen an exiting class and add methods (monkey patching) or create an eigenclass/singleton class (this secret class is first in method lookup path- will override superclass/module mthods). Simpler, but at the COST OF ENCAPSULATION. 
+        singleton_method = ExampleObject.new
+        class << singleton_method
+          # singleton methods = instructions to modify the behavior of the singeton_method object independently of its class, ExampleObject. Won't work with immutable objects, like Fixnum
+        end
+
+8. Proxy: controls access to an object/preventing unauthorized access; provides a location-independent way of getting at the object by hiding that obj lives elsewhere on network; delaying creation of an expensive object until last moment
+  - BankAccount app using a proxy; SOAP client is remote proxy; 
+  1. Client asks for an object- we give it an object but not the object client expects
+  2. We give the client a PROXY- an object that looks and acts like the object the client expected, but is actually an imposter.
+  3. The proxy has a reference to the real object, the SUBJECT, hidden inside. 
+  4. Whenever the client code calls a method on the proxy, the proxy simply FORWARDS the request to the real object. 
+  -- Protection proxy: controls access to the subject (security). Add an authentication check at start of each method- proxy deals with authorization; subject deals with actions.
+  -- Remote proxy: Program on client machine; uses object that lives on a server machine across network. Remote proxy packages up request, sends it over network, waits for a response, unpacks the response, returning answer to unsuspecting client (* Remote procedure call (RPC))- Subject focuses on domain-specific action; proxy focuses on shipping bytes across network.
+  -- Virtual proxy- Only when the client actually calls a method does the virtual proxy scurry off and create or otherwise get access to the real object. Delays creating expensive objects until we really need them. 
+    *** method_missing : any methods that the object doesn't understand will be passed to object of choice. Using send method, missing method from proxy object can be passed to real object, and methods passed as symbols. 
+      def method_missing(name, *args)
+        @subject.send(name, *args)
+      end
+  
+  9. Decorator: add enhancement to existing object; create one class that covers the basic functionality and a set of decorators to go with it that each support the same core interface but adds its own twist on that interface. 
+    Allows you to layer features atop one another so that you can construct objects that have exactly the right set of capabilties that you need for any given situation. Decorators are essentially shells: each takes in a method call, adds its own special twist, and passes the call on to the next component in line.
+      * B/c  all the decorator objs support the same basic interface as the original, the "real" obj that we supply to any of the decorators doesn't have to be an instance of the ConcreteComponent, it can be any other decorator. 
+    - differents types of Writer objects; can layer ie timestamp, numbering, file size
+    1. ConcreteComponent- the "real" object, the object that implements the basic component functionality. (SimpleWriter)
+    2. Component- This class is initialized with a reference to the ConcreteComponent.(WriterDecorator)
+    3. Decorator class(es)- has a reference to a Component - the next component in the Decorator chain- and it implements all the methods of the Component type. 
+      - The Component is the Decorator base class, which the specific types of decorators inherit from. The Component is conponsed of boilerplate methods that delegate to the next decorator down the line. 
+      - Each Decorator layers its uninque actions onto base class and can add its specific methods, 
+        -- Forwardable module - automatically generates the delegating methods 
+
+10. Singleton: Global access to exactly one instance of a class 
+  A class that can only have one instance and that provides global access to that class. If other parts of program need access to that one instance, use a Singelton, but don't use as a communication conduit. 
+  - DatabaseConnection singleton
+  1. Use Ruby Singleton module; then singleton_object.instance will be the ONLY INSTANCE of that class. *lazy instantiation- creates the instance when someone calls instance 
+    -- Behind the scenes: creating a @@instance class variable; def self.instance return @@instance end; private_class_method :new
+      This creates singleton instance before we need it - *eager instantiation
+  ** Make sure  Singleton is modeling things that occur EXACTLY once; and not being used as a conduit of communication b/t bits of program (thus tightly coupling these bits of code)
+
+
+11. Factory: pushes the "which class" decision down on the subclass
+  A generic part of algorithm is coded in the generic base class, and subclasses fill in the blanks left in the base class (like template method). With Factory, *those filled-in blanks determine the class of objects that will be part of base class goal (ie living in the pond.)
+  - types of habitats and animal/plants objects that live in them 
+  1. The CREATORS are the base and concrete classes that contain the factory methods (ie pond is the creator/base, duckpond and frogpong are concrete creators)
+  2. The PRODUCTS are the objects being created (ducks, frogs)
+  3. Parameterized factory method = have a single factory method that takes a parameter, a parameter that tells tehmethod which kind of object to create (depending on symbol passed in). BUT, if need a different subclass for each type of object you want to create, which can quickly get messy. Can fix by passing in object types to be initialized as instance variables (to be called in a new_object method).  
+      FACTORY - leaves "which class" to subclass; TEMPLATE applied to object creation
+  4. ABSTRACT FACTORY: object dedicated to creating a compatible set of objects. (Instead of passing individual object classes to base class, pass a single object that knows how to create a consistent set of products) (comparable to Strategy)
+    Problem: you need to create a compatible set of objects. Solution: Create a separate class to handle that creation.
+      *Abstract Factory class for each valid combination of objects. 
+
+12. Builder: configure complex objects 
+  Encapsulate construction logic in a class of its own- the builder objects takes charge of assembling all the components of a complex object. Each builder has an interface that lets you specify the configuration of your new object step by step.
+       Like a MULTIPART NEW method, where objects are created in an extended process instead of all in one shot.
+       If your object is hard to build, if you have to write a lot of code to configure each object, the you should factor all that code into a separate class- the builder. 
+  - Building a computer; each step is its own class
+  1. Director- the client of the builder object- it directs the builder in the construction of the new object (product)
+    *Product- the new object
+  2. Builder - the class that takes a multipart specification of the product; in control of configuring/creating that new object and preventing you from construction an invalid object.
+  3. While more concerned with config, can also make 'which class' decisions. Base builder class deals with all the details that are in common to subclasses.
+    -- builders hide implementation details- director doesn't have to know the specifics of what goes into creating the new object/product--- just supplies the configuration.
+
+13. Interpreter: creating a specialized language and expressing the solution in that language
+  Problems tend to be self-contained, with crisp boundaries around them- such as query languages or configuration languages. A good option for combining chunks of existing functionality together. 
+  Think of new little language as a series of expressions, and decompose those expressions into a tree structure. Once you have the AST, you can use it to evaluate itself and come up with the solution.
+  - query language, ie SQL, searches for specific objects based on some specification
+  1. Work in two phases. First, the parser reads in the program text and produces a data structure, called an ABSTRACT SYNTAX TREE (AST)- the same info as the original program, but transformed into a tree of objects that can be executed.
+    TERMINALS- the leaf nodes, the  most basic building blocks of language (ie operands)
+    NONTERMINALS- the nonleaf nodes/root nodes, the higher-order concepts in language (operators)
+      Nonterminals have a REFERENCE to one or more subexpressions (* --> 1, --> 2) (My calc reference is based on SEND)
+  2. The AST is evaluated against some set of external conditions, or CONTEXT, to produce the desired computation. 
+    CONTEXT - values or conditions supplied at the time the AST is interpreted
+  3. The AST evaluates itself by RECURSIVELY descending down the tree. (We ask the root node to evaluate itself, which in turn, recursively tries to evalute its two factors; the factors can also be nonterminal and thus have to recursively evaluate its factors)- can build arbitrarily deep trees 
+
+
+Strategy = Classifyer = which class?
+OneLiner and Stack = Intepreter
+  AST where terminals = operands; nonterminals = operators (which have a reference to the terminals through send method)
+    The nonterminals are defined in Ruby, and then added to in my program. Context is then the input, which defines the operands/terminals and chooses from the 4 different operators/nonterminals
+  The way I store operands and operators, and then pull out in RPN order to calculte (inside to outside) is rescursively descending down tree. 
+
+
+

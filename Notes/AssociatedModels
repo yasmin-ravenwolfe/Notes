@@ -1,0 +1,40 @@
+1. Git
+2. Bundle
+3. rake db:seed
+5. To add a column to db: NAME = AddColumn_nametoDatabase_name
+  rails generate migration NAME [:field[:type][:index]]
+5. Run migration
+  rake db:migrate
+6. Undoing migrations- don't use rake db:rollback(will mess up files for collaborators). Name is RemoveColumn-nameFromDatabase_name (field is column to remove)
+  rails g migration NAME field
+7. Associations- create a model and associate that with an existing model (NAME is singular)
+  rails g model NAME [:field[:type][:index]]
+  
+  Main model: has_many :field
+    field is plural
+      (for multiple models put each on a different line with has_many)
+  Associated model: field is singular
+    belongs_to :field
+8. Create a migration that adds an id of main model (a reference) to associated model: (all model names are singular)
+  rails g migration AddMain_model_nameReferenceToAssociated_model_name_singular
+9. Add to migration in sublime text(DO THIS BEFORE running migration- or id field won't be added!):
+  def change
+    change_table :associated_model_name_plural do |t|
+      t.references :main_model_name_singular
+    end
+  end
+10. Run migration
+11. In rails console, can create instances of associated model to link to main model (use plural of associated model name; but use singular of main model name -- b/c of the belongs_to/has_many)
+  ie: m = Movie.first
+      m.showtimes.create()
+12. Routes: Nest resources
+   resources :main_model_plural do
+    resources :associated_model_plural
+  end
+13. Create controller for associated model; add create method and params.
+14. main-model_controller show method: Set @associated_plural to all the associated-model instances associated with @main-model. Set @associated_singular to a new,unsaveed instance of associated-model (so we have an obj to use in show view for main-model)
+  @associated_plural = @main_singular.associated_plural
+  @associated_singular = @main_sinular.associated_plural.new
+15. Update show/other view 
+
+

@@ -1,0 +1,26 @@
+ Interview questions: 
+
+ 4 principles of object oriented programming:
+  1. Abstraction: creating a focused representation of an object in code (think of code in terms of real world objects)
+  2. Polymorphism: redefining (overridding) methods and attributes of a parent class in a subclass.
+  3. Inheritance: inheriting methods and methods properties of a parent class in a subclass.
+  4. Encapsulation: data hiding. Using getters and setters to allow access to attributes outside of that class. 
+  A PIE
+
+Yield:
+      class Array
+      def collect!
+        self.each_with_index! do |value, index|
+        self[index] = yield(value)
+        # saying replace self index with value
+        end
+      end
+
+array = [1,2,3,4]
+array2 = array.collect! do |n|
+  n + 1
+end
+
+The above collect! method will put in the index 0 and the value 1 will be yielded to the block in array2. 
+
+Procs vs Lambdas: Lambdas: checks numbers of arguments and will return argument error (procs will just return nil)

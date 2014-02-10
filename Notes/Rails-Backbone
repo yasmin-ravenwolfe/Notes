@@ -1,0 +1,6 @@
+4. Manifest files compiles files to be included in monolith file (in production).
+  - Order: most specific at bottom; those at bottom will override those at top
+
+5. 
+- Monolith file: exists in production (all those things required in manifest files). It's the zipped up file that the browser reads. 
+- Yield: the view specified by routes controller (methods from controller). The entire contents of the view currently being rendered in inserted.

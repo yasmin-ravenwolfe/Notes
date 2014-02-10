@@ -1,0 +1,41 @@
+
+1. O(1)- constant
+2. O(n)- linear
+3. O(n^2)- proportional (nested)
+4. O(2n)- double (Fib)
+5. O(n log n)- divide and conquer
+
+O(n log(n)):
+
+Quicksort: divides a list into two sublists- low elements and high elements; then recursively divides these lists by picking a pivot point and reordering sublist so all lower values come before, all higher values come after (the pivot is in its final position); keep doing this separately to each sublist of lower values and sublist of higher values. (comparison, not stable)
+
+Mergesort: divide into smallest element (1 element); compare with element adjacent to it; create new lists of 2 elements; compare each element with element (of same index) in adjacent list; keep doing this until all elements are merged again into one list, which is sorted. (comparison, stable)
+
+Heapsort: heap is built out of data (highest/lowest value in root node); largest element (root node) is removed from tree and put in an array; once all elements removed from heap, we have a sorted array (direction of elements as they are inserted depends on if min-heap or max-heap was built) (in-place comparison, not stable)
+
+O(n^2) (quadratic):
+
+Bubble Sort:  keeps going through list, swapping adjacent pairs to be in order (in-place comparison sort)
+
+Selection Sort: divides into unsorted and sorted sublists; goes over unsorted each time to find min (or max) and puts in in sorted list; repeats (in-place comparison sort)
+
+Insertion Sort: compare current element value with previous element- if current is smaller, swap; removes one item; for each iteration choosed one element, finds location it belongs (shifts other elements);inserts its; repeat (in-place comparison sort)- if almost sorted list, use this
+
+O(n + k)
+
+Bucket Sort:creates empty buckets; puts elements into buckets; sorts each bucket using another sorting method or recursively using bucket sort; visit buckets in order and put elements back into sorted array
+
+Counting Sort: loops over to create a histogram of the number of times each key occurs; loops again to determine each key's starting position in output array; loops a third time to move each item to sorted array (non-comparative)
+
+O(nk)
+
+Radix Sort: use bucket or counting sort- each key is dropped into a bucket corresponding with value of rightmost digit ie bucket for 0, 1, 2...9 (keeping original order of keys and preserving list order per bucket); dropped into bucket corresponding with next largest digit; continues until been sorted according to every digit (non-comparative)
+
+
+Comparision:
+ only reads the list elements through a single abstract comparison operation (often a "less than or equal to" operator or a three-way comparison) that determines which of two elements should occur first in the final sorted list. 
+In-place : algorithm which transforms input using a data structure with a small, constant amount of extra storage space. The input is usually overwritten by the output as the algorithm executes. 
+
+Stable: preserves orig input order
+
+Heap: balanced, left-justified binary tree in which no node has a value greater than the value in its parent (heapsort uses this def); large area of memory to allocate and deallocate bloacks as needed; 

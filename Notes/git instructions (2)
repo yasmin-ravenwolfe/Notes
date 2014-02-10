@@ -1,0 +1,42 @@
+click fork assigned to user
+in terminal cd to web-cohort-2 and username
+git clone the url of the forked file
+ls contents
+cd to forked directory
+git claim if on shared machine
+enter user info
+opened sublime
+make changes in sublime
+save
+git diff
+press q to quit
+git status to see if staged
+git add file name to stage
+git status of file
+git commit -m and "description of changes
+"
+git log - history of all changes
+press q for quit
+git push origin master - pushes to master branch in github
+viewed commits on individual repo page
+opened original repo page
+click compare and review
+click compare across forks
+chose head fork and individual username
+next to gravatar click to create a pull request
+enter summary in title section and specific changes in body "if needed"
+send pull request
+
+
+Create a new repository on the command line
+
+touch README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin https://github.com/yazfaz/Projects.git
+git push -u origin master
+Push an existing repository from the command line
+
+git remote add origin https://github.com/yazfaz/Projects.git
+git push -u origin master

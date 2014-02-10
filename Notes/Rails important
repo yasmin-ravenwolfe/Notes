@@ -1,0 +1,5 @@
+
+Passing Ruby code into HTML: 
+In ERB files, you can evaluate ruby code by surrounding it with <%= %>. This will evaluate the ruby code and place the result into the HTML.
+
+You can also use the tags <% %> if you want the ruby code evaluated, but not placed in the file(HTML).
